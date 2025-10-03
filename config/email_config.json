@@ -1,0 +1,7 @@
+{
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "email": "para.pruebas.fabricio@gmail.com",
+  "password": "EsParaPruebas00.",
+  "destinatario": "fabriciomorenoking@gmail.com"
+}

@@ -1,0 +1,604 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Bot Verificador de Citas de Extranjería - Castellón
+Propósito: Ayuda social para detectar disponibilidad de citas (SOLO VERIFICACIÓN)
+Versión: 2.1 (Flujo completo corregido con rutas absolutas y TLS estable)
+"""
+
+import os
+import sys
+import json
+import time
+import random
+import logging
+import smtplib
+import re
+from datetime import datetime
+from pathlib import Path
+from email.mime.text import MIMEText  # ✅ CORRECTO: .text no _text
+from email.mime.multipart import MIMEMultipart
+
+import requests
+from bs4 import BeautifulSoup
+import certifi
+
+# ========= RUTAS ABSOLUTAS BASADAS EN LA UBICACIÓN REAL DEL ARCHIVO =========
+PROJECT_ROOT = Path(__file__).resolve().parent.parent  # src/ -> raíz del proyecto
+LOGS_DIR = PROJECT_ROOT / "logs"
+DATA_DIR = PROJECT_ROOT / "data"
+CONFIG_DIR = PROJECT_ROOT / "config"
+
+# Crear directorios si no existen
+for directory in [LOGS_DIR, DATA_DIR, CONFIG_DIR]:
+    directory.mkdir(parents=True, exist_ok=True)
+
+# ========= LOGGING CON RUTA ABSOLUTA =========
+log_file = LOGS_DIR / "citas_extranjeria.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(str(log_file), encoding="utf-8"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+class CitasExtranjeriaBot:
+    """
+    Bot ético para verificar disponibilidad de citas (solo verificación).
+    Sigue el flujo completo del sitio web oficial con sesiones y formularios.
+    """
+
+    def __init__(self):
+        self.session = requests.Session()
+        # TLS estable con certifi
+        self.session.verify = certifi.where()
+        logging.info(f"🔒 Bundle de certificados: {self.session.verify}")
+        
+        # Headers realistas para parecer navegador
+        self.session.headers.update({
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "none",
+        })
+
+        # Configuración ética
+        self.DELAY_MIN = 3.0
+        self.DELAY_MAX = 6.0
+        
+        # Datos de prueba (solo para verificación)
+        self.TEST_NIE = "***REMOVED***"
+        self.TEST_NOMBRE = "***REMOVED***"
+        
+        # Control de estado
+        self.ultima_respuesta = None
+        self.session_activa = False
+
+    def _esperar(self):
+        """Espera ética entre peticiones"""
+        tiempo = random.uniform(self.DELAY_MIN, self.DELAY_MAX)
+        logging.info(f"⏱️  Esperando {tiempo:.1f}s (comportamiento ético)")
+        time.sleep(tiempo)
+
+    def _guardar_html(self, contenido, nombre):
+        """Guarda HTML para depuración"""
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        archivo = DATA_DIR / f"{nombre}_{timestamp}.html"
+        try:
+            archivo.write_text(contenido, encoding="utf-8")
+            logging.debug(f"📄 HTML guardado: {archivo.name}")
+        except Exception as e:
+            logging.error(f"❌ Error guardando HTML: {e}")
+
+    def _extraer_tokens_formulario(self, html):
+        """Extrae campos ocultos y tokens CSRF"""
+        if not html:
+            return {}
+            
+        soup = BeautifulSoup(html, 'html.parser')
+        tokens = {}
+        
+        for input_field in soup.find_all('input', type='hidden'):
+            name = input_field.get('name')
+            value = input_field.get('value', '')
+            if name:
+                tokens[name] = value
+                logging.debug(f"🔑 Token: {name}={value[:20]}...")
+        
+        return tokens
+
+    def paso1_pagina_inicial(self):
+        """Paso 1: Página inicial del sistema"""
+        logging.info("📍 Paso 1: Accediendo a página inicial...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/index.html"
+        
+        try:
+            response = self.session.get(url, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso1_inicial")
+            self.session_activa = True
+            
+            logging.info("✅ Paso 1: Página inicial cargada correctamente")
+            return True
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 1: {e}")
+            return False
+
+    def paso2_seleccionar_provincia(self):
+        """Paso 2: Seleccionar provincia Castellón"""
+        logging.info("📍 Paso 2: Seleccionando provincia Castellón...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/citar"
+        
+        try:
+            # GET con parámetros para Castellón
+            params = {"p": "12", "locale": "es"}
+            response = self.session.get(url, params=params, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso2_provincia")
+            
+            logging.info("✅ Paso 2: Provincia Castellón seleccionada")
+            return True
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 2: {e}")
+            return False
+
+    def paso3_oficina_tramite(self):
+        """Paso 3: Seleccionar oficina y trámite"""
+        logging.info("📍 Paso 3: Configurando oficina y trámite...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/acInfo"
+        
+        try:
+            # Extraer tokens del formulario anterior
+            tokens = self._extraer_tokens_formulario(self.ultima_respuesta)
+            
+            # Datos del formulario
+            data = {
+                "sede": "12408",           # CNP COMISARIA CASTELLON
+                "tramiteGrupo[0]": "4010", # POLICIA-CERTIFICADOS
+                "tramiteGrupo[1]": "",
+                "provincia": "12",
+                **tokens
+            }
+            
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Referer": "https://icp.administracionelectronica.gob.es/icpplus/citar?p=12&locale=es",
+                "Origin": "https://icp.administracionelectronica.gob.es"
+            }
+            
+            response = self.session.post(url, data=data, headers=headers, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso3_oficina")
+            
+            logging.info("✅ Paso 3: Oficina y trámite configurados")
+            return True
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 3: {e}")
+            return False
+
+    def paso4_entrada_sin_clave(self):
+        """Paso 4: Acceso sin Cl@ve"""
+        logging.info("📍 Paso 4: Seleccionando entrada sin Cl@ve...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/acEntrada"
+        
+        try:
+            response = self.session.get(url, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso4_entrada")
+            
+            logging.info("✅ Paso 4: Página de entrada sin Cl@ve cargada")
+            return True
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 4: {e}")
+            return False
+
+    def paso5_validar_datos(self):
+        """Paso 5: Introducir y validar datos"""
+        logging.info("📍 Paso 5: Validando datos de usuario...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/acValidarEntrada"
+        
+        try:
+            tokens = self._extraer_tokens_formulario(self.ultima_respuesta)
+            
+            data = {
+                "nie": self.TEST_NIE,
+                "nombre": self.TEST_NOMBRE,
+                "paisNacimiento": "",
+                "annoNacimiento": "",
+                **tokens
+            }
+            
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Referer": "https://icp.administracionelectronica.gob.es/icpplus/acEntrada",
+                "Origin": "https://icp.administracionelectronica.gob.es"
+            }
+            
+            response = self.session.post(url, data=data, headers=headers, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso5_validar")
+            
+            logging.info("✅ Paso 5: Datos validados correctamente")
+            return True
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 5: {e}")
+            return False
+
+    def paso6_verificar_citas(self):
+        """Paso 6: Verificar disponibilidad de citas"""
+        logging.info("📍 Paso 6: Verificando disponibilidad de citas...")
+        url = "https://icp.administracionelectronica.gob.es/icpplus/acCitar"
+        
+        try:
+            response = self.session.get(url, timeout=30)
+            response.raise_for_status()
+            
+            self.ultima_respuesta = response.text
+            self._guardar_html(response.text, "paso6_citas")
+            
+            # Análisis del contenido
+            contenido = response.text.lower()
+            
+            # Patrones de NO disponibilidad
+            no_disponible = [
+                "no hay citas disponibles",
+                "no existen citas",
+                "en este momento no hay citas",
+                "actualmente no hay citas",
+                "sin citas disponibles"
+            ]
+            
+            # Patrones de SÍ disponibilidad
+            si_disponible = [
+                "seleccione fecha",
+                "seleccionar fecha",
+                "calendario",
+                "ui-datepicker",
+                "fechas disponibles"
+            ]
+            
+            # Determinar disponibilidad
+            if any(patron in contenido for patron in no_disponible):
+                hay_citas = False
+                mensaje = "❌ NO HAY CITAS DISPONIBLES (confirmado por texto)"
+                logging.info(mensaje)
+            elif any(patron in contenido for patron in si_disponible):
+                hay_citas = True
+                mensaje = "🎉 ¡HAY CITAS DISPONIBLES! (calendario detectado)"
+                logging.critical(mensaje)
+            else:
+                # Análisis más profundo con BeautifulSoup
+                soup = BeautifulSoup(response.text, 'html.parser')
+                elementos_citas = (
+                    soup.find('div', class_='ui-datepicker') or
+                    soup.find('input', {'type': 'date'}) or
+                    soup.find('select', {'name': re.compile('fecha', re.I)})
+                )
+                
+                if elementos_citas:
+                    hay_citas = True
+                    mensaje = "🎉 ¡HAY CITAS DISPONIBLES! (elementos de fecha detectados)"
+                    logging.critical(mensaje)
+                else:
+                    hay_citas = False
+                    mensaje = "⚠️  Estado indeterminado - No se detectaron citas claras"
+                    logging.warning(mensaje)
+            
+            return {
+                "hay_citas": hay_citas,
+                "mensaje": mensaje,
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "url_final": response.url
+            }
+            
+        except Exception as e:
+            logging.error(f"❌ Error en paso 6: {e}")
+            return {
+                "hay_citas": False,
+                "mensaje": f"Error en verificación: {str(e)}",
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "url_final": url
+            }
+
+    def verificar_disponibilidad_completa(self):
+        """Ejecuta el flujo completo de verificación"""
+        logging.info("🚀 === INICIANDO VERIFICACIÓN COMPLETA DE CITAS ===")
+        
+        try:
+            # Reiniciar sesión para cada verificación
+            self.session.close()
+            self.session = requests.Session()
+            self.session.verify = certifi.where()
+            self.session.headers.update({
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                              "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Language": "es-ES,es;q=0.9",
+            })
+            
+            # Ejecutar flujo paso a paso
+            pasos = [
+                ("Página inicial", self.paso1_pagina_inicial),
+                ("Seleccionar provincia", self.paso2_seleccionar_provincia), 
+                ("Configurar oficina", self.paso3_oficina_tramite),
+                ("Entrada sin clave", self.paso4_entrada_sin_clave),
+                ("Validar datos", self.paso5_validar_datos)
+            ]
+            
+            for nombre_paso, funcion_paso in pasos:
+                if not funcion_paso():
+                    return {
+                        "hay_citas": False,
+                        "mensaje": f"Error en: {nombre_paso}",
+                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                self._esperar()  # Espera ética entre pasos
+            
+            # Verificar citas (paso final)
+            resultado = self.paso6_verificar_citas()
+            
+            # Procesar resultado
+            self.guardar_resultado(resultado)
+            
+            if resultado["hay_citas"]:
+                self.crear_alerta_local(resultado)
+                self.enviar_notificacion_email(resultado)
+            
+            return resultado
+            
+        except Exception as e:
+            logging.error(f"❌ Error durante verificación completa: {e}")
+            return {
+                "hay_citas": False,
+                "mensaje": f"Error general: {str(e)}",
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        finally:
+            logging.info("🏁 === VERIFICACIÓN COMPLETA FINALIZADA ===\n")
+
+    def guardar_resultado(self, resultado):
+        """Guarda resultado en CSV con ruta absoluta"""
+        csv_path = DATA_DIR / "resultados_citas.csv"
+        es_nuevo = not csv_path.exists()
+        
+        try:
+            with open(csv_path, "a", encoding="utf-8") as f:
+                if es_nuevo:
+                    f.write("timestamp,hay_citas,mensaje,url_final\n")
+                f.write(f'{resultado["timestamp"]},{resultado["hay_citas"]},"{resultado["mensaje"]}",{resultado.get("url_final", "N/A")}\n')
+            logging.info("💾 Resultado guardado en CSV")
+        except Exception as e:
+            logging.error(f"❌ Error guardando resultado: {e}")
+
+    def crear_alerta_local(self, resultado):
+        """Crea archivo de alerta en data/"""
+        alert_path = DATA_DIR / "🚨_CITAS_DISPONIBLES_🚨.txt"
+        try:
+            with open(alert_path, "w", encoding="utf-8") as f:
+                f.write("🚨🚨🚨 ¡¡¡CITAS DISPONIBLES DETECTADAS!!! 🚨🚨🚨\n\n")
+                f.write(f"📅 Fecha y hora: {resultado['timestamp']}\n")
+                f.write(f"💬 Detalle: {resultado['mensaje']}\n")
+                f.write(f"🔗 URL: {resultado.get('url_final', 'N/A')}\n\n")
+                f.write("🚀 ACCIÓN INMEDIATA REQUERIDA:\n")
+                f.write("1. Ve AHORA al sitio web oficial\n")
+                f.write("2. Reserva la cita MANUALMENTE\n")
+                f.write("3. NO uses bots para reservar\n\n")
+                f.write("⚖️  RECORDATORIO: Solo verificación, no reserva automática\n")
+            logging.critical("🚨 ¡ARCHIVO DE ALERTA CREADO! Revisa data/")
+        except Exception as e:
+            logging.error(f"❌ Error creando alerta: {e}")
+
+    def enviar_notificacion_email(self, resultado):
+        """Envía notificación por email si está configurado"""
+        config_path = CONFIG_DIR / "email_config.json"
+        if not config_path.exists():
+            logging.info("📧 Email no configurado")
+            return
+            
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                config = json.load(f)
+                
+            msg = MIMEMultipart()
+            msg["From"] = config["email"]
+            msg["To"] = config["destinatario"]
+            msg["Subject"] = "🚨 ALERTA: CITAS EXTRANJERÍA DISPONIBLES"
+            
+            cuerpo = f"""
+¡CITAS DISPONIBLES DETECTADAS!
+
+Timestamp: {resultado['timestamp']}
+Mensaje: {resultado['mensaje']}
+URL: {resultado.get('url_final', 'N/A')}
+
+IMPORTANTE: Accede manualmente al sitio para reservar.
+Este bot solo verifica disponibilidad.
+"""
+            msg.attach(MIMEText(cuerpo, "plain", "utf-8"))
+            
+            with smtplib.SMTP(config["smtp_server"], config["smtp_port"]) as server:
+                server.starttls()
+                server.login(config["email"], config["password"])
+                server.sendmail(config["email"], config["destinatario"], msg.as_string())
+                
+            logging.info("📧 Notificación enviada por email")
+            
+        except Exception as e:
+            logging.error(f"❌ Error enviando email: {e}")
+
+    def monitor_continuo(self, intervalo_minutos=10, max_verificaciones=None):
+        """Monitor continuo con control ético"""
+        logging.info("🔄 === INICIANDO MONITOR CONTINUO ===")
+        logging.info(f"⏱️  Intervalo: {intervalo_minutos} minutos")
+        logging.info(f"🔢 Máximo verificaciones: {'Ilimitado' if not max_verificaciones else max_verificaciones}")
+        
+        contador = 0
+        try:
+            while True:
+                contador += 1
+                logging.info(f"\n📊 --- Verificación #{contador} ---")
+                
+                resultado = self.verificar_disponibilidad_completa()
+                
+                if resultado["hay_citas"]:
+                    logging.critical("🎉 ¡CITAS ENCONTRADAS! Revisa el sitio web INMEDIATAMENTE")
+                    # Opcional: hacer verificaciones adicionales
+                    for i in range(2):
+                        time.sleep(30)
+                        logging.info(f"🔄 Verificación adicional {i+1}/2...")
+                        self.verificar_disponibilidad_completa()
+                
+                if max_verificaciones and contador >= max_verificaciones:
+                    logging.info("✅ Límite de verificaciones alcanzado")
+                    break
+                
+                # Esperar hasta la próxima verificación
+                logging.info(f"💤 Próxima verificación en {intervalo_minutos} minutos...")
+                time.sleep(intervalo_minutos * 60)
+                
+        except KeyboardInterrupt:
+            logging.info("\n⏹️  Monitor detenido por el usuario (Ctrl+C)")
+        finally:
+            logging.info("🏁 === MONITOR FINALIZADO ===")
+
+    def menu_principal(self):
+        """Menú interactivo principal"""
+        print("=" * 70)
+        print("🔍 BOT VERIFICADOR DE CITAS EXTRANJERÍA - CASTELLÓN")
+        print("=" * 70)
+        print("📋 Propósito: Ayuda social - Solo verificación de disponibilidad")
+        print("⚖️  Legal: NO reserva citas, solo detecta disponibilidad")
+        print("🛡️  Ético: Respeta límites del servidor con esperas")
+        print("=" * 70)
+        
+        while True:
+            print("\n📋 OPCIONES DISPONIBLES:")
+            print("1️⃣  Verificación única completa")
+            print("2️⃣  Monitor continuo (cada 10 min)")
+            print("3️⃣  Monitor personalizado")
+            print("4️⃣  Configurar notificaciones email")
+            print("5️⃣  Ver últimos resultados")
+            print("0️⃣  Salir")
+            
+            try:
+                opcion = input("\n👉 Selecciona opción: ").strip()
+                
+                if opcion == "1":
+                    print("\n🔍 Ejecutando verificación única...")
+                    resultado = self.verificar_disponibilidad_completa()
+                    print(f"\n📊 Resultado: {resultado['mensaje']}")
+                    
+                elif opcion == "2":
+                    print("\n🔄 Iniciando monitor continuo...")
+                    print("💡 Presiona Ctrl+C para detener")
+                    self.monitor_continuo(intervalo_minutos=10)
+                    
+                elif opcion == "3":
+                    minutos = int(input("⏱️  Intervalo en minutos: ") or "10")
+                    max_ver = input("🔢 Máximo verificaciones (Enter = ilimitado): ").strip()
+                    max_ver = int(max_ver) if max_ver else None
+                    self.monitor_continuo(intervalo_minutos=minutos, max_verificaciones=max_ver)
+                    
+                elif opcion == "4":
+                    self.configurar_email_interactivo()
+                    
+                elif opcion == "5":
+                    self.mostrar_resultados_recientes()
+                    
+                elif opcion == "0":
+                    print("\n👋 ¡Gracias por usar el verificador!")
+                    print("🤝 Recuerda: Solo para ayuda social")
+                    break
+                    
+                else:
+                    print("❌ Opción no válida")
+                    
+            except KeyboardInterrupt:
+                print("\n⏹️  Operación cancelada")
+                continue
+            except Exception as e:
+                print(f"❌ Error: {e}")
+
+    def configurar_email_interactivo(self):
+        """Configuración interactiva de email"""
+        print("\n📧 CONFIGURACIÓN DE NOTIFICACIONES EMAIL")
+        print("=" * 50)
+        try:
+            smtp_server = input("📡 Servidor SMTP (ej: smtp.gmail.com): ")
+            smtp_port = int(input("🔌 Puerto SMTP (ej: 587): "))
+            email = input("📧 Tu email: ")
+            password = input("🔑 Contraseña/App Password: ")
+            destinatario = input("📮 Email destinatario: ")
+            
+            config = {
+                "smtp_server": smtp_server,
+                "smtp_port": smtp_port,
+                "email": email,
+                "password": password,
+                "destinatario": destinatario
+            }
+            
+            config_path = CONFIG_DIR / "email_config.json"
+            with open(config_path, "w", encoding="utf-8") as f:
+                json.dump(config, f, indent=2)
+            
+            print("✅ Configuración de email guardada")
+            
+        except Exception as e:
+            print(f"❌ Error en configuración: {e}")
+
+    def mostrar_resultados_recientes(self):
+        """Muestra los últimos resultados"""
+        csv_path = DATA_DIR / "resultados_citas.csv"
+        if not csv_path.exists():
+            print("ℹ️  No hay resultados previos")
+            return
+            
+        try:
+            with open(csv_path, "r", encoding="utf-8") as f:
+                lineas = f.readlines()
+            
+            print(f"\n📊 ÚLTIMOS {min(10, len(lineas)-1)} RESULTADOS:")
+            print("=" * 50)
+            
+            for linea in lineas[-10:]:
+                if not linea.startswith("timestamp"):
+                    print(linea.strip())
+                    
+        except Exception as e:
+            print(f"❌ Error leyendo resultados: {e}")
+
+def main():
+    """Función principal"""
+    try:
+        bot = CitasExtranjeriaBot()
+        bot.menu_principal()
+    except Exception as e:
+        logging.error(f"❌ Error crítico en main: {e}")
+        print(f"❌ Error crítico: {e}")
+
+if __name__ == "__main__":
+    main()

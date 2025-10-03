@@ -1,0 +1,112 @@
+timestamp,hay_citas,mensaje,url_final
+2025-09-30 23:02:56,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:02:59,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:02:59,False,"NO HAY CITAS DISPONIBLES (detectado: 'no hay citas disponibles')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:03:00,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:03:00,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:03:01,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:03:01,False,"NO HAY CITAS DISPONIBLES (detectado: 'no hay citas disponibles')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:03:01,True,"¡POSIBLES CITAS DISPONIBLES! (detectado: 'calendario')",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:26:44,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:26:54,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:26:58,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:01,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:02,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:03,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:03,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:04,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:27:07,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:31:48,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:31:58,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:32:00,False,"NO HAY CITAS DISPONIBLES (modo estable sin simulación)",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-09-30 23:35:32,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:35:48,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:36:25,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:36:26,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:36:56,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:43:15,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:47:13,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-09-30 23:47:28,False,"Error en paso 'procedimiento'",https://icp.administracionelectronica.gob.es/icpplus/index.html
+2025-10-01 12:21:53,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:27:07,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:28:33,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:29:59,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:31:24,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:32:48,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:34:04,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:39:32,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:46:21,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:47:48,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:49:10,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:50:37,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:52:02,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:53:29,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-01 12:54:58,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:10:22,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:11:08,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:16:32,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:21:54,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:27:16,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:32:42,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:38:07,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:43:34,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:48:57,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:54:25,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 10:59:50,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:05:14,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:10:39,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:21:12,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:26:35,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:32:02,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:37:29,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:42:52,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:48:15,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:53:39,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 11:59:02,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 12:04:31,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 12:09:57,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:18:41,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:24:07,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:29:30,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:34:56,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:40:21,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:45:50,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 14:51:13,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 15:01:43,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 15:07:14,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 15:12:43,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-02 15:18:06,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:29:26,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:30:48,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:32:09,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:33:34,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:34:59,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:36:24,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:37:45,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:39:12,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:40:36,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:42:00,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:43:23,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:44:52,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:46:16,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:47:44,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:49:13,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:50:37,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:52:03,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:53:30,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:54:57,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:56:24,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:57:47,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 13:59:15,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:00:40,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:02:04,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:03:28,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:04:54,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:06:14,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:07:40,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:09:03,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:10:29,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:11:59,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:16:09,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:18:46,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
+2025-10-03 14:19:29,False,"⚠️  NO se detectaron citas disponibles",https://icp.administracionelectronica.gob.es/icpplus/acCitar
