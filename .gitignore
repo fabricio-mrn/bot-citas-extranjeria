@@ -1,22 +1,28 @@
-# Ignorar archivos JSON de configuración y datos privados
+# Ignorar archivos JSON de configuracion sensibles
 *.json
 
 # Ignorar archivos HTML de prueba
 *.html
 
-# Ignorar archivos logs
+# Ignorar logs
 *.log
 
-# Ignorar carpetas o archivos temporales de pruebas o backups
-/backups-pruebas/
-/backups/
-/*.backup
+# Ignorar carpetas de logs y datos
+logs/
+data/
 
-# Ignorar bytecode y cachés Python
+# Python cache y bytecode
 __pycache__/
 *.pyc
 
-# Ignorar entornos virtuales si tienes venv o similares
+# Entornos virtuales
 venv/
 .env
+
+# Archivos temporales y backups
+*.backup
+*.swp
+
+# Configuraciones locales
+config/emailconfig.json
 
