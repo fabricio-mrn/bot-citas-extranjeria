@@ -82,8 +82,8 @@ class CitasExtranjeriaBot:
         self.DELAY_MAX = 6.0
         
         # Datos de prueba (solo para verificación)
-        self.TEST_NIE = "***REMOVED***"
-        self.TEST_NOMBRE = "***REMOVED***"
+        self.TEST_NIE = "X5492368Z"
+        self.TEST_NOMBRE = "Miriam Malasquez"
         
         # Control de estado
         self.ultima_respuesta = None
